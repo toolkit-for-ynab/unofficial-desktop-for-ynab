@@ -1,0 +1,30 @@
+{
+  "name": "desktop-for-ynab",
+  "version": "0.1.0",
+  "description": "A desktop wrapper for YNAB",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/toolkit-for-ynab/desktop-for-ynab.git"
+  },
+  "keywords": [
+    "YNAB",
+    "you",
+    "need",
+    "a",
+    "budget",
+    "desktop"
+  ],
+  "author": "Open Source Community",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/toolkit-for-ynab/desktop-for-ynab/issues"
+  },
+  "homepage": "https://github.com/toolkit-for-ynab/desktop-for-ynab#readme",
+  "devDependencies": {
+    "electron-prebuilt": "^1.2.0"
+  }
+}
