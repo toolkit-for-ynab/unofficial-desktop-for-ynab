@@ -3,6 +3,9 @@ const electron = require('electron')
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
+// Storing settings
+const ElectronSettings = require('electron-settings');
+let settings = new ElectronSettings();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -10,13 +13,22 @@ let mainWindow
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 800, height: 600})
+  mainWindow = new BrowserWindow({width: 1100, height: 800})
 
   // and load the index.html of the app.
-  mainWindow.loadURL(`file://${__dirname}/index.html`)
+  let budgetUrl = 'https://app.youneedabudget.com';
+  if (settings.get('budget-id')) {
+    budgetUrl += '/' + settings.get('budget-id');
+  }
 
-  // Open the DevTools.
-  mainWindow.webContents.openDevTools()
+  mainWindow.loadURL(budgetUrl);
+
+  mainWindow.webContents.on('did-navigate-in-page', (event, url) => {
+    var match = /([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\/budget/.exec(url);
+    if (match) {
+      settings.set('budget-id', match[1]);
+    }
+  });
 
   // Emitted when the window is closed.
   mainWindow.on('closed', function () {
