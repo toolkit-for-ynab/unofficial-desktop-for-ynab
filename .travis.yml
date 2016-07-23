@@ -37,7 +37,7 @@ install:
 script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run dist-mac; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run dist-lin-win; fi
-- find .
+- find dist/
 branches:
   except:
   - /^v\d+\.\d+\.\d+$/
