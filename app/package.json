@@ -3,12 +3,15 @@
   "productName": "Desktop for YNAB",
   "version": "0.1.0",
   "description": "A desktop wrapper for YNAB",
+  "author": {
+    "name" : "Kevin Brown",
+    "email" : "kevinbrowntech@gmail.com"
+  },
   "main": "main.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/toolkit-for-ynab/desktop-for-ynab.git"
   },
-  "author": "Open Source Community",
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/toolkit-for-ynab/desktop-for-ynab/issues"
