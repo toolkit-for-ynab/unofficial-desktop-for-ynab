@@ -39,9 +39,6 @@ install:
 script:
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run dist-mac; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run dist-lin-win; fi
-branches:
-  except:
-  - /^v\d+\.\d+\.\d+$/
 deploy:
   provider: releases
   api_key:
