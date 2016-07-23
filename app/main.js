@@ -1,4 +1,7 @@
 const electron = require('electron')
+
+if (require('electron-squirrel-startup')) return;
+
 // Module to control application life.
 const app = electron.app
 // Module to create native browser window.
