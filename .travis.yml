@@ -8,7 +8,9 @@ language: c
 matrix:
   include:
     - os: osx
-    - os: windows
+    - os: linux
+      env: CC=clang CXX=clang++ npm_config_clang=1
+      compiler: clang
 
 cache:
   directories:
