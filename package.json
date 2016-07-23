@@ -46,10 +46,6 @@
         }
       ]
     },
-    "win": {
-      "remoteReleases": "https://github.com/toolkit-for-ynab/desktop-for-ynab",
-      "nsiTemplate" : "nsi-template/installer.nsi"
-    },
     "linux": {
       "target": ["deb", "AppImage"]
     }
