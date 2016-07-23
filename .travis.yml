@@ -52,5 +52,6 @@ deploy:
     - ./dist/win/*.exe
     - ./dist/*.deb
   on:
+    all_branches: true
     tags: true
     repo: toolkit-for-ynab/desktop-for-ynab
