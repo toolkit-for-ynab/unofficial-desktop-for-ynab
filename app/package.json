@@ -4,8 +4,8 @@
   "version": "0.1.0",
   "description": "A desktop wrapper for YNAB",
   "author": {
-    "name" : "Kevin Brown",
-    "email" : "kevinbrowntech@gmail.com"
+    "name": "Kevin Brown",
+    "email": "kevinbrowntech@gmail.com"
   },
   "main": "main.js",
   "repository": {
@@ -17,7 +17,8 @@
     "url": "https://github.com/toolkit-for-ynab/desktop-for-ynab/issues"
   },
   "dependencies": {
-    "electron-settings": "^1.1.1"
+    "electron-settings": "^1.1.1",
+    "electron-squirrel-startup": "^1.0.0"
   },
   "devDependencies": {}
 }
