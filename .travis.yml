@@ -41,6 +41,7 @@ script:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run dist-lin-win; fi
 deploy:
   provider: releases
+  skip_cleanup: true
   api_key:
     secure: RgJyMMuqB9e3j+dUu38d3E/4xmW80cgRfb4W8jZkEWIEi1FBxAVIdmI69LA4CERoyMpAbyPO56ng2Alm3xida/os3SmvRRv4WFUlDWT7TBVUQH69t3pG1/270LVjG+LWuTj7K7umkmgOetmc9dc7tTGQ8yXDvJH93Ez4XgaKxoQTEZn8swXfOpZDFnfK7WTxHuoBc4iWbueSUTxYgmgyDgxmLJsCrtqKk/XmXWs9TzWpLuFQezKOfZ0eIk0SappIq3XYOMqS6+QGuq3D+A1WBpjGIIBsqWCo4vvqhIOJXbiGRl6ee8MurErRkFL2GWZdggdTQ3A2o6chTGToEP2DHKkd6jEcLw97nMQWEeoMDnesL8ZhEB3yCfMMbhjV4TBdwokDJVp/tEsm9Ks2ysoMtZXBSnG8jhVLjtfw8u2zI9d8+LTQgZqVZsdtUmn4Yl5ru1Wd13s3N0v+WyUaiq7xZTQiAyD+xyczYJkwLvcbEcDXuFm2H0AHeMZ3I5UQN9vuZ6KXlYENsbVI3CjoJAF4Ko/ssO03LhIOPo+eWHXScUFyMncOcerPuEA7HLTdbIvT8pvjj7sAS8TMq1BoYgMQjl4UMrz9Rp/MKMvqTYUL3hHehTAel+1WJH7vPkc8rfM5/3vzzQE0jPxsu6Zm8OG2Tp3i4a3YQQ8pxICDEcMVEAg=
   file_glob: true
