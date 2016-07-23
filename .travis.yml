@@ -40,4 +40,5 @@ deploy:
   file_glob: true
   file: dist/mac/*.dmg
   on:
+    tags: true
     repo: toolkit-for-ynab/desktop-for-ynab
