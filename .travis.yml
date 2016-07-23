@@ -1,42 +1,42 @@
 osx_image: xcode7.3
-
 sudo: required
 dist: trusty
-
 language: c
-
 matrix:
   include:
-    - os: osx
-    - os: linux
-      env: CC=clang CXX=clang++ npm_config_clang=1
-      compiler: clang
-
+  - os: osx
+  - os: linux
+    env: CC=clang CXX=clang++ npm_config_clang=1
+    compiler: clang
 cache:
   directories:
   - node_modules
   - app/node_modules
   - $HOME/.electron
   - $HOME/.cache
-
 addons:
   apt:
     packages:
-      - libgnome-keyring-dev
-      - icnsutils
-
+    - libgnome-keyring-dev
+    - icnsutils
 before_install:
-  - mkdir -p /tmp/git-lfs && curl -L https://github.com/github/git-lfs/releases/download/v1.2.1/git-lfs-$([ "$TRAVIS_OS_NAME" == "linux" ] && echo "linux" || echo "darwin")-amd64-1.2.1.tar.gz | tar -xz -C /tmp/git-lfs --strip-components 1 && /tmp/git-lfs/git-lfs pull
-
+- mkdir -p /tmp/git-lfs && curl -L https://github.com/github/git-lfs/releases/download/v1.2.1/git-lfs-$([
+  "$TRAVIS_OS_NAME" == "linux" ] && echo "linux" || echo "darwin")-amd64-1.2.1.tar.gz
+  | tar -xz -C /tmp/git-lfs --strip-components 1 && /tmp/git-lfs/git-lfs pull
 install:
 - nvm install 6
-- npm install electron-builder@next # force install next version to test electron-builder
+- npm install electron-builder@next
 - npm install
 - npm prune
-
 script:
 - npm run dist
-
 branches:
   except:
-    - "/^v\\d+\\.\\d+\\.\\d+$/"
+  - /^v\d+\.\d+\.\d+$/
+deploy:
+  provider: releases
+  api_key:
+    secure: RgJyMMuqB9e3j+dUu38d3E/4xmW80cgRfb4W8jZkEWIEi1FBxAVIdmI69LA4CERoyMpAbyPO56ng2Alm3xida/os3SmvRRv4WFUlDWT7TBVUQH69t3pG1/270LVjG+LWuTj7K7umkmgOetmc9dc7tTGQ8yXDvJH93Ez4XgaKxoQTEZn8swXfOpZDFnfK7WTxHuoBc4iWbueSUTxYgmgyDgxmLJsCrtqKk/XmXWs9TzWpLuFQezKOfZ0eIk0SappIq3XYOMqS6+QGuq3D+A1WBpjGIIBsqWCo4vvqhIOJXbiGRl6ee8MurErRkFL2GWZdggdTQ3A2o6chTGToEP2DHKkd6jEcLw97nMQWEeoMDnesL8ZhEB3yCfMMbhjV4TBdwokDJVp/tEsm9Ks2ysoMtZXBSnG8jhVLjtfw8u2zI9d8+LTQgZqVZsdtUmn4Yl5ru1Wd13s3N0v+WyUaiq7xZTQiAyD+xyczYJkwLvcbEcDXuFm2H0AHeMZ3I5UQN9vuZ6KXlYENsbVI3CjoJAF4Ko/ssO03LhIOPo+eWHXScUFyMncOcerPuEA7HLTdbIvT8pvjj7sAS8TMq1BoYgMQjl4UMrz9Rp/MKMvqTYUL3hHehTAel+1WJH7vPkc8rfM5/3vzzQE0jPxsu6Zm8OG2Tp3i4a3YQQ8pxICDEcMVEAg=
+  file: dist/*
+  on:
+    repo: toolkit-for-ynab/desktop-for-ynab
