@@ -3,40 +3,23 @@ const electron = require('electron')
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
-// Storing settings
-const ElectronSettings = require('electron-settings');
-let settings = new ElectronSettings();
+const SettingsHelper = require('./settings-helper');
+const settingsHelper = new SettingsHelper();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let mainWindow
+let mainWindow;
 
 function createWindow () {
   // Create the browser window.
-  mainWindow = new BrowserWindow({width: 1100, height: 800})
+  mainWindow = new BrowserWindow(settingsHelper.windowSize);
+  settingsHelper.attachEvents(mainWindow);
 
-  // and load the index.html of the app.
-  let budgetUrl = 'https://app.youneedabudget.com';
-  if (settings.get('budget-id')) {
-    budgetUrl += '/' + settings.get('budget-id');
-  }
-
-  mainWindow.loadURL(budgetUrl);
-
-  mainWindow.webContents.on('did-navigate-in-page', (event, url) => {
-    var match = /([a-z0-9]{8}-[a-z0-9]{4}-[a-z0-9]{4}-[a-z0-9]{12})\/budget/.exec(url);
-    if (match) {
-      settings.set('budget-id', match[1]);
-    }
-  });
-
-  // Emitted when the window is closed.
   mainWindow.on('closed', function () {
-    // Dereference the window object, usually you would store windows
-    // in an array if your app supports multi windows, this is the time
-    // when you should delete the corresponding element.
     mainWindow = null
   })
+
+  mainWindow.loadURL(settingsHelper.budgetUrl);
 }
 
 // This method will be called when Electron has finished
@@ -60,6 +43,3 @@ app.on('activate', function () {
     createWindow()
   }
 })
-
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and require them here.
