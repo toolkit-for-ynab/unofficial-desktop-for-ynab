@@ -11,6 +11,9 @@ const settingsHelper = new SettingsHelper();
 let mainWindow;
 
 function createWindow () {
+  // Set the app menu
+  require('./menus.js');
+
   // Create the browser window.
   mainWindow = new BrowserWindow(settingsHelper.windowSize);
   settingsHelper.attachEvents(mainWindow);

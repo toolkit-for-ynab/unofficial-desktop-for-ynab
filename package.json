@@ -1,41 +1,51 @@
 {
   "name": "desktop-for-ynab",
   "productName": "Desktop for YNAB",
+  "author": "Open Source Community",
   "version": "0.1.0",
   "description": "A desktop wrapper for YNAB",
   "main": "main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "electron ./app",
     "postinstall": "install-app-deps",
     "pack": "build --dir",
-    "dist": "build"
+    "dist": "build",
+    "clean": "rm -rf dist"
   },
   "build": {
     "appId": "com.toolkit-for-ynab.desktop-for-ynab",
-    "app-category-type": "public.app-category.finance"
+    "app-category-type": "public.app-category.finance",
+    "dmg": {
+      "contents": [
+        {
+          "x": 410,
+          "y": 150,
+          "type": "link",
+          "path": "/Applications"
+        },
+        {
+          "x": 130,
+          "y": 150,
+          "type": "file"
+        }
+      ]
+    },
+    "win": {
+      "remoteReleases": "https://github.com/toolkit-for-ynab/desktop-for-ynab"
+    },
+    "linux": {
+      "target": ["deb", "AppImage"]
+    }
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/toolkit-for-ynab/desktop-for-ynab.git"
   },
-  "keywords": [
-    "YNAB",
-    "you",
-    "need",
-    "a",
-    "budget",
-    "desktop"
-  ],
-  "author": "Open Source Community",
-  "license": "MIT",
   "bugs": {
     "url": "https://github.com/toolkit-for-ynab/desktop-for-ynab/issues"
   },
-  "homepage": "https://github.com/toolkit-for-ynab/desktop-for-ynab#readme",
   "devDependencies": {
+    "electron-builder": "next",
     "electron-prebuilt": "^1.2.0"
-  },
-  "dependencies": {
-    "electron-settings": "^1.1.1"
   }
 }
