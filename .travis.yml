@@ -25,6 +25,7 @@ before_install:
 - mkdir -p /tmp/git-lfs && curl -L https://github.com/github/git-lfs/releases/download/v1.2.1/git-lfs-$([
   "$TRAVIS_OS_NAME" == "linux" ] && echo "linux" || echo "darwin")-amd64-1.2.1.tar.gz
   | tar -xz -C /tmp/git-lfs --strip-components 1 && /tmp/git-lfs/git-lfs pull
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo rm /etc/apt/sources.list.d/google-chrome.list; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo -E dpkg --add-architecture i386; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo -E add-apt-repository ppa:ubuntu-wine/ppa -y; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo -E apt-get -yq update &>> ~/apt-get-update.log; fi
