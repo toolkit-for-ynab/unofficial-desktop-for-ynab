@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-pushd build
 rm -f icon.icns
 mkdir icon.iconset
 sips -z 16 16     icon-512.png --out icon.iconset/icon_16x16.png
@@ -14,4 +13,3 @@ sips -z 512 512   icon-512.png --out icon.iconset/icon_256x256@2x.png
 sips -z 512 512   icon-512.png --out icon.iconset/icon_512x512.png
 iconutil -c icns icon.iconset
 rm -R icon.iconset
-popd
