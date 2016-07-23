@@ -31,8 +31,9 @@ install:
 - npm install
 - npm prune
 script:
-- npm run dist
-- tree
+- if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then npm run dist-mac; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then npm run dist-lin-win; fi
+- find .
 branches:
   except:
   - /^v\d+\.\d+\.\d+$/

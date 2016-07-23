@@ -10,11 +10,27 @@
     "postinstall": "install-app-deps",
     "pack": "build --dir",
     "dist": "build",
+    "dist-mac": "build -m",
+    "dist-lin-win": "build -lw",
     "clean": "rm -rf dist"
   },
   "build": {
     "appId": "com.toolkit-for-ynab.desktop-for-ynab",
     "app-category-type": "public.app-category.finance",
+    "fileAssociations": [
+      {
+        "ext": "qif",
+        "name": "Quicken Interchange Format"
+      },
+      {
+        "ext": "ofx",
+        "name": "Open Financial Exchange"
+      },
+      {
+        "ext": "csv",
+        "name": "Comma Separated Values"
+      }
+    ],
     "dmg": {
       "contents": [
         {
@@ -31,7 +47,8 @@
       ]
     },
     "win": {
-      "remoteReleases": "https://github.com/toolkit-for-ynab/desktop-for-ynab"
+      "remoteReleases": "https://github.com/toolkit-for-ynab/desktop-for-ynab",
+      "nsiTemplate" : "nsi-template/installer.nsi"
     },
     "linux": {
       "target": ["deb", "AppImage"]
