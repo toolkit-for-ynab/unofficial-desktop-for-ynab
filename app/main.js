@@ -13,7 +13,16 @@ const settingsHelper = new SettingsHelper();
 // be closed automatically when the JavaScript object is garbage collected.
 let mainWindow;
 
-function createWindow () {
+app.on('will-finish-launching', () => {
+  app.on('open-file', (event, path) => {
+    console.log("open " + event + path);
+  });
+});
+
+// This method will be called when Electron has finished
+// initialization and is ready to create browser windows.
+// Some APIs can only be used after this event occurs.
+app.on('ready', () => {
   // Set the app menu
   require('./menus.js');
 
@@ -26,12 +35,7 @@ function createWindow () {
   })
 
   mainWindow.loadURL(settingsHelper.budgetUrl);
-}
-
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
-app.on('ready', createWindow)
+});
 
 // Quit when all windows are closed.
 app.on('window-all-closed', function () {
