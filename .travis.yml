@@ -6,8 +6,6 @@ matrix:
   include:
   - os: osx
   - os: linux
-    env: CC=clang CXX=clang++ npm_config_clang=1
-    compiler: clang
 cache:
   directories:
   - node_modules
@@ -21,12 +19,15 @@ addons:
     - graphicsmagick
     - xz-utils
     - mono-complete
+    - osslsigncode
+    - gcc-multilib
+    - g++-multilib
 install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo rm /etc/apt/sources.list.d/google-chrome.list; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo -E dpkg --add-architecture i386; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo -E add-apt-repository ppa:ubuntu-wine/ppa -y; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo -E apt-get -yq update; fi
-- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo -E apt-get install wine1.8 -y; fi
+- if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo -E apt-get install --no-install-recommends -y wine1.8; fi
 - nvm install 6
 - npm install electron-builder@next
 - npm install
