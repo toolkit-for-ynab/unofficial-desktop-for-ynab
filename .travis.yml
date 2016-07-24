@@ -21,7 +21,6 @@ addons:
     - graphicsmagick
     - xz-utils
     - mono-complete
-    - osslsigncode
 install:
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo rm /etc/apt/sources.list.d/google-chrome.list; fi
 - if [[ "$TRAVIS_OS_NAME" == "linux" ]]; then sudo -E dpkg --add-architecture i386; fi
