@@ -10,8 +10,8 @@
     "postinstall": "install-app-deps",
     "pack": "build --dir",
     "dist": "build",
-    "dist-mac": "build -m",
-    "dist-lin-win": "build -lw",
+    "dist-mac": "build -m --publish onTagOrDraft",
+    "dist-lin-win": "build -lw --publish onTagOrDraft",
     "clean": "rm -rf dist"
   },
   "build": {
@@ -31,7 +31,7 @@
         "name": "Comma Separated Values"
       }
     ],
-    "extend-info": "./app/resources/Add-Info.plist",
+    "extend-info": "./build/Add-Info.plist",
     "dmg": {
       "contents": [
         {
