@@ -1,6 +1,6 @@
 {
-  "name": "desktop-for-ynab",
-  "productName": "Desktop for YNAB",
+  "name": "unofficial-desktop-for-ynab",
+  "productName": "Unofficial Desktop for YNAB",
   "version": "0.1.0",
   "description": "A desktop wrapper for YNAB",
   "author": {
