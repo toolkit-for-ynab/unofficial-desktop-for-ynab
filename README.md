@@ -18,6 +18,8 @@ To package for the platform you're currently on: `npm run dist`
 
 ## Legal Stuff
 
+Monitor Icon by To Uyen from the Noun Project
+
 **IMPORTANT NOTE:** This project is not affiliated with YNAB in any way and YNAB has not endorsed this at all. You Need a Budget and YNAB are registered trademarks of Steine LLC and/or one of its subsidiaries.
 
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
