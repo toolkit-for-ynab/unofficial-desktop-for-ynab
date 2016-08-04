@@ -1,9 +1,13 @@
-# Desktop for YNAB
-Desktop Wrapper for YNAB using Electron
+# Unofficial Desktop for YNAB
+Unofficial Desktop Wrapper for YNAB using Electron
 
 [![Build Status](https://travis-ci.org/toolkit-for-ynab/desktop-for-ynab.svg?branch=master)](https://travis-ci.org/toolkit-for-ynab/desktop-for-ynab)
 
-# To Build and Run
+# To Install
+
+Visit our [releases page](https://github.com/toolkit-for-ynab/unofficial-desktop-for-ynab/releases) and download the latest release for your platform.
+
+# To Build and Run (Developers)
 
 You'll need node v0.4 or higher.
 
