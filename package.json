@@ -15,7 +15,7 @@
     "clean": "rm -rf dist"
   },
   "build": {
-    "appId": "com.toolkit-for-ynab.desktop-for-ynab",
+    "appId": "com.toolkit-for-ynab.unofficial-desktop-for-ynab",
     "app-category-type": "public.app-category.finance",
     "fileAssociations": [
       {
@@ -53,10 +53,10 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/toolkit-for-ynab/desktop-for-ynab.git"
+    "url": "git+https://github.com/toolkit-for-ynab/unofficial-desktop-for-ynab.git"
   },
   "bugs": {
-    "url": "https://github.com/toolkit-for-ynab/desktop-for-ynab/issues"
+    "url": "https://github.com/toolkit-for-ynab/unofficial-desktop-for-ynab/issues"
   },
   "devDependencies": {
     "electron-builder": "next",
