@@ -1,0 +1,39 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="x-ua-compatible" content="ie=edge">
+    <title>Loading</title>
+    <meta name="description" content="Loading">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+    <style>
+      body {
+        font-family: 'Montserrat', sans-serif;
+      }
+
+      .wrapper{
+      	width:300px;
+      	height:300px;
+      	position:absolute;
+      	left:50%;
+      	top:50%;
+      	margin:-150px 0 0 -150px;
+        text-align: center;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrapper">
+      <img src="img/toolkit-logo.svg">
+      <h2 id="status-message">Downloading Toolkit...</h2>
+    </div>
+
+    <script src="../lib/TweenMax.min.js"></script>
+    <script src="../lib/TimelineMax.min.js"></script>
+    <script>
+      var timeline = new TimelineMax({ repeat: -1, yoyo: true, repeatDelay: 0.3 });
+    timeline.to('img', 3, { rotation: 720, ease: Quad.easeInOut });
+    </script>
+  </body>
+</html>
