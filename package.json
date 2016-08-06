@@ -7,6 +7,8 @@
   "main": "main.js",
   "scripts": {
     "start": "electron ./app",
+    "debug": "electron --debug=5858 ./app",
+    "node-debugger": "ELECTRON_RUN_AS_NODE=true electron node_modules/node-inspector/bin/inspector.js",
     "postinstall": "install-app-deps",
     "pack": "build --dir",
     "dist": "build",
@@ -48,7 +50,10 @@
       ]
     },
     "linux": {
-      "target": ["deb", "AppImage"]
+      "target": [
+        "deb",
+        "AppImage"
+      ]
     }
   },
   "repository": {
@@ -61,5 +66,8 @@
   "devDependencies": {
     "electron-builder": "next",
     "electron-prebuilt": "^1.2.0"
+  },
+  "dependencies": {
+    "yauzl": "^2.6.0"
   }
 }
