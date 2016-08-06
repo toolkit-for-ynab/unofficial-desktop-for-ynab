@@ -6,8 +6,13 @@ if (require('electron-squirrel-startup')) return;
 const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
+
+// Our settings helper instance
 const SettingsHelper = require('./settings-helper');
 const settingsHelper = new SettingsHelper();
+
+const ToolkitHelper = require('./toolkit-helper');
+const toolkitHelper = new ToolkitHelper();
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -19,9 +24,6 @@ app.on('will-finish-launching', () => {
   });
 });
 
-// This method will be called when Electron has finished
-// initialization and is ready to create browser windows.
-// Some APIs can only be used after this event occurs.
 app.on('ready', () => {
   // Set the app menu
   require('./menus.js');
@@ -29,6 +31,8 @@ app.on('ready', () => {
   // Create the browser window.
   mainWindow = new BrowserWindow(settingsHelper.windowSize);
   settingsHelper.attachEvents(mainWindow);
+
+  toolkitHelper.activateIfNeeded(mainWindow);
 
   mainWindow.on('closed', function () {
     mainWindow = null
