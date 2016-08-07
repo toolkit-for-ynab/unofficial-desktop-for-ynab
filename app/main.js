@@ -7,7 +7,6 @@ const app = electron.app
 // Module to create native browser window.
 const BrowserWindow = electron.BrowserWindow
 
-// Our settings helper instance
 const SettingsHelper = require('./settings-helper');
 const settingsHelper = new SettingsHelper();
 

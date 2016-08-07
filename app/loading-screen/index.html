@@ -1,39 +1,75 @@
 <!doctype html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <meta http-equiv="x-ua-compatible" content="ie=edge">
-    <title>Loading</title>
-    <meta name="description" content="Loading">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
-    <style>
-      body {
-        font-family: 'Montserrat', sans-serif;
-      }
 
-      .wrapper{
-      	width:300px;
-      	height:300px;
-      	position:absolute;
-      	left:50%;
-      	top:50%;
-      	margin:-150px 0 0 -150px;
-        text-align: center;
-      }
-    </style>
-  </head>
-  <body>
-    <div class="wrapper">
-      <img src="img/toolkit-logo.svg">
-      <h2 id="status-message">Downloading Toolkit...</h2>
-    </div>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <title>Loading</title>
+  <meta name="description" content="Loading">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href='https://fonts.googleapis.com/css?family=Montserrat' rel='stylesheet' type='text/css'>
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      color: white;
+    }
 
-    <script src="../lib/TweenMax.min.js"></script>
-    <script src="../lib/TimelineMax.min.js"></script>
-    <script>
-      var timeline = new TimelineMax({ repeat: -1, yoyo: true, repeatDelay: 0.3 });
-    timeline.to('img', 3, { rotation: 720, ease: Quad.easeInOut });
-    </script>
-  </body>
+    .wrapper {
+      width: 300px;
+      height: 300px;
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      margin: -220px 0 0 -150px;
+      text-align: center;
+      background-color: rgba(0, 0, 0, 0.7);
+      padding-top: 70px;
+      border-radius: 55px;
+    }
+    /* Make page less HTML-ey */
+
+    :not(input):not(textarea),
+    :not(input):not(textarea)::after,
+    :not(input):not(textarea)::before {
+      -webkit-user-select: none;
+      user-select: none;
+      cursor: default;
+    }
+
+    a:not([draggable=true]),
+    img:not([draggable=true]) {
+      -webkit-user-drag: none;
+      user-drag: none;
+      /* Not supported in Electron yet */
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrapper">
+    <img src="img/toolkit-logo.svg">
+    <h2 id="status-message">Loading...</h2>
+  </div>
+
+  <script src="../lib/TweenMax.min.js"></script>
+  <script src="../lib/TimelineMax.min.js"></script>
+  <script>
+    // Listen for message changes from the main Electron process.
+    require('electron').ipcRenderer.on('message', (event, message) => {
+      console.log('Message: ' + message);
+      document.getElementById('status-message').innerText = message;
+    });
+
+    // Animate the + logo.
+    var timeline = new TimelineMax({
+      repeat: -1,
+      repeatDelay: 0.3
+    });
+    timeline.to('img', 3.5, {
+      rotation: 1080,
+      ease: Quad.easeInOut
+    });
+  </script>
+</body>
+
 </html>

@@ -17,8 +17,11 @@
     "url": "https://github.com/toolkit-for-ynab/desktop-for-ynab/issues"
   },
   "dependencies": {
-    "electron-settings": "^1.1.1",
-    "electron-squirrel-startup": "^1.0.0"
+    "electron-settings": "^2.1.1",
+    "electron-squirrel-startup": "^1.0.0",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^2.5.4",
+    "yauzl": "^2.6.0"
   },
   "devDependencies": {}
 }

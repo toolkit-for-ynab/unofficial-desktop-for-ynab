@@ -1,5 +1,9 @@
 const electron = require('electron');
 const Menu = electron.Menu;
+const MenuItem = electron.MenuItem;
+
+const SettingsHelper = require('./settings-helper');
+const settingsHelper = new SettingsHelper();
 
 const template = [
   {
@@ -35,6 +39,27 @@ const template = [
     ]
   },
   {
+    label: 'Toolkit',
+    submenu: [
+      {
+        label: 'Enable Toolkit for YNAB',
+        accelerator: 'CmdOrCtrl+T',
+        type: 'checkbox',
+        checked: settingsHelper.toolkitEnabled,
+        click(item, focusedWindow) {
+          settingsHelper.toolkitEnabled = !settingsHelper.toolkitEnabled;
+        }
+      },
+      {
+        role: 'separator'
+      },
+      {
+        label: settingsHelper.toolkitEnabled ? 'Using Toolkit for YNAB v' + settingsHelper.installedToolkitVersion : 'Toolkit not enabled',
+        enabled: false
+      }
+    ]
+  },
+  {
     label: 'View',
     submenu: [
       {
@@ -65,7 +90,7 @@ const template = [
     submenu: [
       {
         label: 'Learn More',
-        click() { electron.shell.openExternal('http://electron.atom.io'); }
+        click() { electron.shell.openExternal('https://github.com/toolkit-for-ynab/unofficial-desktop-for-ynab'); }
       },
     ]
   },
@@ -107,7 +132,7 @@ if (process.platform === 'darwin') {
     ]
   });
   // Window menu.
-  template[3].submenu = [
+  template[4].submenu = [
     {
       label: 'Close',
       accelerator: 'CmdOrCtrl+W',
@@ -134,3 +159,28 @@ if (process.platform === 'darwin') {
 
 const menu = Menu.buildFromTemplate(template);
 Menu.setApplicationMenu(menu);
+
+// Changes to toolkit settings or versions should reflect in the menu.
+function updateToolkitMenuItem(newValue) {
+  let menu = Menu.getApplicationMenu();
+  let toolkitMenu = menu.items.find(item => item.label === 'Toolkit').submenu;
+
+  let labelText;
+
+  if (typeof newValue === 'boolean') {
+    labelText = newValue ? 'Using Toolkit for YNAB v' + settingsHelper.installedToolkitVersion : 'Toolkit not enabled';
+  } else {
+    labelText = settingsHelper.toolkitEnabled ? 'Using Toolkit for YNAB v' + newValue : 'Toolkit not enabled';
+  }
+
+  let newItem = new MenuItem({
+    label: labelText,
+    enabled: false
+  });
+
+  toolkitMenu.items.length--;
+  toolkitMenu.items.push(newItem);
+}
+
+settingsHelper.observeToolkitEnabled(updateToolkitMenuItem);
+settingsHelper.observeToolkitInstalledVersion(updateToolkitMenuItem);

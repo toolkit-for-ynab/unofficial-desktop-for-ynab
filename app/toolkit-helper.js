@@ -1,29 +1,41 @@
 const fs = require('fs');
 const http = require('http');
+const mkdirp = require('mkdirp');
 const path = require('path');
+const rimraf = require('rimraf');
 const yauzl = require('yauzl');
 
-const ElectronSettings = require('electron-settings');
-let settings = new ElectronSettings();
+const SettingsHelper = require('./settings-helper');
+const settingsHelper = new SettingsHelper();
 
-const toolkitPath = path.join(settings.getConfigFilePath(), '..', '..', 'toolkit');
+const StatusDisplay = require('./status-display');
+
+const toolkitPath = settingsHelper.toolkitPath;
+const toolkitStagingPath = settingsHelper.toolkitStagingPath;
 
 class ToolkitHelper {
-  activateIfNeeded(mainWindow) {
-    //if (settings.get('toolkit-enabled')) {
+  activateIfNeeded() {
+    if (settingsHelper.toolkitEnabled) {
       if (!this.toolkitInstalled()) {
-        this.installToolkit()
+        this.installLatestToolkit()
           .then(() => {
-            this.activateToolkit(mainWindow);
+            this.activateToolkit();
           })
       } else {
-        this.activateToolkit(mainWindow);
+        this.activateToolkit();
       }
-    //}
+    }
+
+    settingsHelper.observeToolkitEnabled((newValue) => {
+      if (newValue) {
+        this.activateIfNeeded();
+      }
+    });
   }
 
   toolkitInstalled() {
     try {
+      debugger;
       return fs.statSync(path.join(toolkitPath, 'main.js'));
     } catch (err) {
       // File doesn't exist.
@@ -31,18 +43,84 @@ class ToolkitHelper {
     }
   }
 
-  installToolkit() {
-    this.downloadFile('http://toolkitforynab.com/desktop-updates/toolkitforynab_desktop.zip', path.join(toolkitPath, '..', 'toolkit.zip'))
+  installLatestToolkit() {
+    StatusDisplay.showMessage('Downloading Toolkit...');
+
+    let destination = path.join(toolkitPath, '..', 'toolkit.zip');
+
+    // Steps:
+    // 1. Download the zip file from our website
+    // 2. Unzip it into our settings directory/toolkit
+    // This serves as a staging directory so we can move the other one into place
+    // 3. Delete the zip file as we no longer need it
+    // 4. Delete the old toolkit directory in toolkit-installed
+    // 5. Rename toolkit directory to toolkit-installed
+    // 6. Read manifest file to determine version. Save in settings for easy retrieval
+    return new Promise((resolve, reject) => {
+      this.downloadFile('http://toolkitforynab.com/desktop-updates/toolkitforynab_desktop.zip', destination)
       .then(() => {
-        return this.unzipFile(path.join(toolkitPath, '..', 'toolkitforynab_desktop.zip'));
+        StatusDisplay.showMessage('Installing Toolkit...');
+
+        return this.unzipFile(destination);
       })
       .then(() => {
-        console.log('done!');
+        return this.deleteRecursively(path.join(toolkitPath, '..', 'toolkit.zip'))
+      })
+      .then(() => {
+        return this.deleteRecursively(toolkitPath);
+      })
+      .then(() => {
+        return this.renameFolder(toolkitStagingPath, toolkitPath);
+      })
+      .then(() => {
+        return this.saveToolkitVersionFromManifestInSettings();
+      })
+      .then(() => {
+        StatusDisplay.finished();
+
+        resolve();
       });
+    });
   }
 
-  activateToolkit(app) {
+  activateToolkit() {
 
+  }
+
+  deleteRecursively(path) {
+    return new Promise((resolve, reject) => {
+      // rm -rf = rimraf
+      rimraf(path, (err) => {
+        if (err) reject(err);
+
+        resolve();
+      });
+    });
+  }
+
+  renameFolder(oldName, newName) {
+    return new Promise((resolve, reject) => {
+      fs.rename(oldName, newName, (err) => {
+        if (err) reject(err);
+
+        resolve();
+      });
+    });
+  }
+
+  saveToolkitVersionFromManifestInSettings() {
+    return new Promise((resolve, reject) => {
+      fs.readFile(path.join(toolkitPath, 'manifest.json'), 'utf8', function (err, data) {
+        if (err) reject(err);
+
+        let manifest = JSON.parse(data);
+
+        debugger;
+        settingsHelper.installedToolkitVersion = manifest.version;
+
+        resolve();
+      });
+    });
   }
 
   downloadFile(url, destination) {
@@ -60,17 +138,18 @@ class ToolkitHelper {
     });
   }
 
-  unzipFile(path) {
-    debugger;
+  unzipFile(file) {
+    let destination = path.join(file, '..', path.basename(file, '.zip'));
+
     return new Promise((resolve, reject) => {
       try {
-        yauzl.open(path, { autoClose: true, lazyEntries: true }, (err, zipfile) => {
+        yauzl.open(file, { autoClose: true, lazyEntries: true }, (err, zipfile) => {
           if (err) throw err;
           zipfile.readEntry();
           zipfile.on('entry', function(entry) {
             if (entry.fileName.endsWith('/')) {
               // directory file names end with '/'
-              mkdirp(entry.fileName, function(err) {
+              mkdirp(path.join(destination, entry.fileName), function(err) {
                 if (err) throw err;
                 zipfile.readEntry();
               });
@@ -79,9 +158,9 @@ class ToolkitHelper {
               zipfile.openReadStream(entry, function(err, readStream) {
                 if (err) throw err;
                 // ensure parent directory exists
-                mkdirp(path.dirname(entry.fileName), function(err) {
+                mkdirp(path.join(destination, path.dirname(entry.fileName)), function(err) {
                   if (err) throw err;
-                  readStream.pipe(fs.createWriteStream(entry.fileName));
+                  readStream.pipe(fs.createWriteStream(path.join(destination, entry.fileName)));
                   readStream.on('end', function() {
                     zipfile.readEntry();
                   });
