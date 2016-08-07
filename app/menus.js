@@ -5,182 +5,177 @@ const MenuItem = electron.MenuItem;
 const SettingsHelper = require('./settings-helper');
 const settingsHelper = new SettingsHelper();
 
-const template = [
-  {
-    label: 'Edit',
-    submenu: [
+class MenuHelper {
+  static _getTemplate() {
+    let template = [
       {
-        role: 'undo'
+        label: 'Edit',
+        submenu: [
+          {
+            role: 'undo'
+          },
+          {
+            role: 'redo'
+          },
+          {
+            type: 'separator'
+          },
+          {
+            role: 'cut'
+          },
+          {
+            role: 'copy'
+          },
+          {
+            role: 'paste'
+          },
+          {
+            role: 'pasteandmatchstyle'
+          },
+          {
+            role: 'delete'
+          },
+          {
+            role: 'selectall'
+          },
+        ]
       },
       {
-        role: 'redo'
+        label: 'Toolkit',
+        submenu: [
+          {
+            label: 'Enable Toolkit for YNAB',
+            accelerator: 'CmdOrCtrl+T',
+            type: 'checkbox',
+            checked: settingsHelper.toolkitEnabled,
+            click(item, focusedWindow) {
+              settingsHelper.toolkitEnabled = !settingsHelper.toolkitEnabled;
+            }
+          },
+          {
+            role: 'separator'
+          },
+          {
+            label: settingsHelper.toolkitEnabled ? 'Using Toolkit for YNAB v' + settingsHelper.installedToolkitVersion : 'Toolkit not enabled',
+            enabled: false
+          }
+        ]
       },
       {
-        type: 'separator'
+        label: 'View',
+        submenu: [
+          {
+            label: 'Reload',
+            accelerator: 'CmdOrCtrl+R',
+            click(item, focusedWindow) {
+              if (focusedWindow) focusedWindow.reload();
+            }
+          },
+          {
+            role: 'togglefullscreen'
+          },
+        ]
       },
       {
-        role: 'cut'
+        role: 'window',
+        submenu: [
+          {
+            role: 'minimize'
+          },
+          {
+            role: 'close'
+          },
+        ]
       },
       {
-        role: 'copy'
+        role: 'help',
+        submenu: [
+          {
+            label: 'Learn More',
+            click() { electron.shell.openExternal('https://github.com/toolkit-for-ynab/unofficial-desktop-for-ynab'); }
+          },
+        ]
       },
-      {
-        role: 'paste'
-      },
-      {
-        role: 'pasteandmatchstyle'
-      },
-      {
-        role: 'delete'
-      },
-      {
-        role: 'selectall'
-      },
-    ]
-  },
-  {
-    label: 'Toolkit',
-    submenu: [
-      {
-        label: 'Enable Toolkit for YNAB',
-        accelerator: 'CmdOrCtrl+T',
-        type: 'checkbox',
-        checked: settingsHelper.toolkitEnabled,
-        click(item, focusedWindow) {
-          settingsHelper.toolkitEnabled = !settingsHelper.toolkitEnabled;
-        }
-      },
-      {
-        role: 'separator'
-      },
-      {
-        label: settingsHelper.toolkitEnabled ? 'Using Toolkit for YNAB v' + settingsHelper.installedToolkitVersion : 'Toolkit not enabled',
-        enabled: false
-      }
-    ]
-  },
-  {
-    label: 'View',
-    submenu: [
-      {
-        label: 'Reload',
-        accelerator: 'CmdOrCtrl+R',
-        click(item, focusedWindow) {
-          if (focusedWindow) focusedWindow.reload();
-        }
-      },
-      {
-        role: 'togglefullscreen'
-      },
-    ]
-  },
-  {
-    role: 'window',
-    submenu: [
-      {
-        role: 'minimize'
-      },
-      {
-        role: 'close'
-      },
-    ]
-  },
-  {
-    role: 'help',
-    submenu: [
-      {
-        label: 'Learn More',
-        click() { electron.shell.openExternal('https://github.com/toolkit-for-ynab/unofficial-desktop-for-ynab'); }
-      },
-    ]
-  },
-];
+    ];
 
-if (process.platform === 'darwin') {
-  const name = electron.app.getName();
-  template.unshift({
-    label: name,
-    submenu: [
-      {
-        role: 'about'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        role: 'services',
-        submenu: []
-      },
-      {
-        type: 'separator'
-      },
-      {
-        role: 'hide'
-      },
-      {
-        role: 'hideothers'
-      },
-      {
-        role: 'unhide'
-      },
-      {
-        type: 'separator'
-      },
-      {
-        role: 'quit'
-      },
-    ]
-  });
-  // Window menu.
-  template[4].submenu = [
-    {
-      label: 'Close',
-      accelerator: 'CmdOrCtrl+W',
-      role: 'close'
-    },
-    {
-      label: 'Minimize',
-      accelerator: 'CmdOrCtrl+M',
-      role: 'minimize'
-    },
-    {
-      label: 'Zoom',
-      role: 'zoom'
-    },
-    {
-      type: 'separator'
-    },
-    {
-      label: 'Bring All to Front',
-      role: 'front'
+    if (process.platform === 'darwin') {
+      template.unshift({
+        label: electron.app.getName(),
+        submenu: [
+          {
+            role: 'about'
+          },
+          {
+            type: 'separator'
+          },
+          {
+            role: 'services',
+            submenu: []
+          },
+          {
+            type: 'separator'
+          },
+          {
+            role: 'hide'
+          },
+          {
+            role: 'hideothers'
+          },
+          {
+            role: 'unhide'
+          },
+          {
+            type: 'separator'
+          },
+          {
+            role: 'quit'
+          },
+        ]
+      });
+
+      // Window menu.
+      template[4].submenu = [
+        {
+          label: 'Close',
+          accelerator: 'CmdOrCtrl+W',
+          role: 'close'
+        },
+        {
+          label: 'Minimize',
+          accelerator: 'CmdOrCtrl+M',
+          role: 'minimize'
+        },
+        {
+          label: 'Zoom',
+          role: 'zoom'
+        },
+        {
+          type: 'separator'
+        },
+        {
+          label: 'Bring All to Front',
+          role: 'front'
+        }
+      ];
     }
-  ];
-}
 
-const menu = Menu.buildFromTemplate(template);
-Menu.setApplicationMenu(menu);
-
-// Changes to toolkit settings or versions should reflect in the menu.
-function updateToolkitMenuItem(newValue) {
-  let menu = Menu.getApplicationMenu();
-  let toolkitMenu = menu.items.find(item => item.label === 'Toolkit').submenu;
-
-  let labelText;
-
-  if (typeof newValue === 'boolean') {
-    labelText = newValue ? 'Using Toolkit for YNAB v' + settingsHelper.installedToolkitVersion : 'Toolkit not enabled';
-  } else {
-    labelText = settingsHelper.toolkitEnabled ? 'Using Toolkit for YNAB v' + newValue : 'Toolkit not enabled';
+    return template;
   }
 
-  let newItem = new MenuItem({
-    label: labelText,
-    enabled: false
-  });
+  // Changes to toolkit settings or versions should reflect in the menu.
+  static _recreateMenu() {
+    let menu = Menu.getApplicationMenu();
 
-  toolkitMenu.items.length--;
-  toolkitMenu.items.push(newItem);
+    if (menu) {
+      menu.clear();
+    }
+    // Need to recreate the entire menu. See https://github.com/electron/electron/issues/528
+    menu = Menu.buildFromTemplate(MenuHelper._getTemplate());
+    Menu.setApplicationMenu(menu);
+  }
 }
 
-settingsHelper.observeToolkitEnabled(updateToolkitMenuItem);
-settingsHelper.observeToolkitInstalledVersion(updateToolkitMenuItem);
+MenuHelper._recreateMenu();
+
+settingsHelper.observeToolkitEnabled(MenuHelper._recreateMenu);
+settingsHelper.observeToolkitInstalledVersion(MenuHelper._recreateMenu);
