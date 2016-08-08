@@ -2,7 +2,7 @@
   "name": "unofficial-desktop-for-ynab",
   "productName": "Unofficial Desktop for YNAB",
   "author": "Open Source Community",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "A desktop wrapper for YNAB",
   "main": "main.js",
   "scripts": {
@@ -64,12 +64,13 @@
     "url": "https://github.com/toolkit-for-ynab/unofficial-desktop-for-ynab/issues"
   },
   "devDependencies": {
-    "electron-builder": "next",
+    "electron-builder": "^5.23.2",
     "electron-prebuilt": "^1.2.0"
   },
   "dependencies": {
     "mkdirp": "^0.5.1",
     "rimraf": "^2.5.4",
+    "typescript": "^1.8.10",
     "yauzl": "^2.6.0"
   }
 }
