@@ -70,6 +70,22 @@ class SettingsHelper {
     });
   }
 
+  get updatingToolkit() {
+    return settings.getSync('toolkit.updating');
+  }
+
+  set updatingToolkit(updating) {
+    settings.setSync('toolkit.updating', updating);
+  }
+
+  observeUpdatingToolkit(callback) {
+    if (!callback) throw 'A callback is required.'
+
+    settings.observe('toolkit.updating', (event) => {
+      callback(event.newValue);
+    });
+  }
+
   get toolkitPath() {
     return path.join(settings.getSettingsFilePath(), '..', 'toolkit-installed');
   }

@@ -5,8 +5,10 @@ const MenuItem = electron.MenuItem;
 const SettingsHelper = require('./settings-helper');
 const settingsHelper = new SettingsHelper();
 
+const ToolkitHelper = require('./toolkit-helper');
+
 class MenuHelper {
-  static _getTemplate() {
+  static getTemplate() {
     let template = [
       {
         label: 'Edit',
@@ -45,7 +47,6 @@ class MenuHelper {
         submenu: [
           {
             label: 'Enable Toolkit for YNAB',
-            accelerator: 'CmdOrCtrl+T',
             type: 'checkbox',
             checked: settingsHelper.toolkitEnabled,
             click(item, focusedWindow) {
@@ -53,11 +54,26 @@ class MenuHelper {
             }
           },
           {
-            role: 'separator'
+            type: 'separator'
           },
           {
             label: settingsHelper.toolkitEnabled ? 'Using Toolkit for YNAB v' + settingsHelper.installedToolkitVersion : 'Toolkit not enabled',
             enabled: false
+          },
+          {
+            label: 'Open Toolkit for YNAB Settings...',
+            enabled: settingsHelper.toolkitEnabled && !settingsHelper.updatingToolkit,
+            accelerator: process.platform === 'darwin' ? 'Cmd+,' : 'Ctrl+T',
+            click(item, focusedWindow) {
+              ToolkitHelper.showSettingsPage();
+            }
+          },
+          {
+            label: settingsHelper.updatingToolkit ? 'Checking for updates...' : 'Check for Toolkit Updates',
+            enabled: settingsHelper.toolkitEnabled && !settingsHelper.updatingToolkit,
+            click(item, focusedWindow) {
+              settingsHelper.updatingToolkit = true;
+            }
           }
         ]
       },
@@ -163,19 +179,18 @@ class MenuHelper {
   }
 
   // Changes to toolkit settings or versions should reflect in the menu.
-  static _recreateMenu() {
-    let menu = Menu.getApplicationMenu();
+  static recreateMenu() {
+    var settingsResult = settingsHelper.toolkitEnabled && !settingsHelper.updatingToolkit;
+    debugger;
 
-    if (menu) {
-      menu.clear();
-    }
     // Need to recreate the entire menu. See https://github.com/electron/electron/issues/528
-    menu = Menu.buildFromTemplate(MenuHelper._getTemplate());
+    let menu = Menu.buildFromTemplate(MenuHelper.getTemplate());
     Menu.setApplicationMenu(menu);
   }
 }
 
-MenuHelper._recreateMenu();
+MenuHelper.recreateMenu();
 
-settingsHelper.observeToolkitEnabled(MenuHelper._recreateMenu);
-settingsHelper.observeToolkitInstalledVersion(MenuHelper._recreateMenu);
+settingsHelper.observeToolkitEnabled(MenuHelper.recreateMenu);
+settingsHelper.observeToolkitInstalledVersion(MenuHelper.recreateMenu);
+settingsHelper.observeUpdatingToolkit(MenuHelper.recreateMenu);

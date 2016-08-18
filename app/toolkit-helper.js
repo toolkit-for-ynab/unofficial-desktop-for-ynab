@@ -1,3 +1,4 @@
+const {BrowserWindow} = require('electron');
 const fs = require('fs');
 const http = require('http');
 const mkdirp = require('mkdirp');
@@ -14,6 +15,16 @@ const toolkitPath = settingsHelper.toolkitPath;
 const toolkitStagingPath = settingsHelper.toolkitStagingPath;
 
 class ToolkitHelper {
+  static showSettingsPage() {
+    let win = new BrowserWindow({width: 800, height: 600});
+
+    win.on('closed', () => {
+      win = null
+    });
+
+    win.loadURL('file://' + path.join(toolkitPath, 'options.html'));
+  }
+
   activateIfNeeded() {
     if (settingsHelper.toolkitEnabled) {
       if (!this.toolkitInstalled()) {
@@ -35,7 +46,6 @@ class ToolkitHelper {
 
   toolkitInstalled() {
     try {
-      debugger;
       return fs.statSync(path.join(toolkitPath, 'main.js'));
     } catch (err) {
       // File doesn't exist.
@@ -45,6 +55,8 @@ class ToolkitHelper {
 
   installLatestToolkit() {
     StatusDisplay.showMessage('Downloading Toolkit...');
+
+    settingsHelper.updatingToolkit = true;
 
     let destination = path.join(toolkitPath, '..', 'toolkit.zip');
 
@@ -77,6 +89,8 @@ class ToolkitHelper {
       })
       .then(() => {
         StatusDisplay.finished();
+
+        settingsHelper.updatingToolkit = false;
 
         resolve();
       });
@@ -115,7 +129,6 @@ class ToolkitHelper {
 
         let manifest = JSON.parse(data);
 
-        debugger;
         settingsHelper.installedToolkitVersion = manifest.version;
 
         resolve();
