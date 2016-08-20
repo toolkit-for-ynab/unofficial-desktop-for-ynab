@@ -6,7 +6,7 @@
   "description": "A desktop wrapper for YNAB",
   "main": "main.js",
   "scripts": {
-    "start": "electron ./app",
+    "start": "electron --enable-logging ./app",
     "debug": "electron --debug=5858 ./app",
     "node-debugger": "ELECTRON_RUN_AS_NODE=true electron node_modules/node-inspector/bin/inspector.js",
     "postinstall": "install-app-deps",
