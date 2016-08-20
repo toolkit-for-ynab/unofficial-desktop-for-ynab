@@ -6,23 +6,31 @@ const path = require('path');
 const rimraf = require('rimraf');
 const yauzl = require('yauzl');
 
-const SettingsHelper = require('./settings-helper');
+const SettingsHelper = require('../settings-helper');
 const settingsHelper = new SettingsHelper();
 
-const StatusDisplay = require('./status-display');
+const StatusDisplay = require('../status-display');
 
 const toolkitPath = settingsHelper.toolkitPath;
 const toolkitStagingPath = settingsHelper.toolkitStagingPath;
 
 class ToolkitHelper {
   static showSettingsPage() {
-    let win = new BrowserWindow({width: 800, height: 600});
+    let win = new BrowserWindow({
+      width: 800,
+      height: 600,
+      webPreferences: {
+        preload: `file://${__dirname}/chrome-api.js`
+      }
+    });
+
+    win.webContents.openDevTools();
 
     win.on('closed', () => {
       win = null
     });
 
-    win.loadURL('file://' + path.join(toolkitPath, 'options.html'));
+    win.loadURL(`file://${toolkitPath}/options.html`);
   }
 
   activateIfNeeded() {

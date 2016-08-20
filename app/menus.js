@@ -5,7 +5,7 @@ const MenuItem = electron.MenuItem;
 const SettingsHelper = require('./settings-helper');
 const settingsHelper = new SettingsHelper();
 
-const ToolkitHelper = require('./toolkit-helper');
+const ToolkitHelper = require('./toolkit/toolkit-helper');
 
 class MenuHelper {
   static getTemplate() {

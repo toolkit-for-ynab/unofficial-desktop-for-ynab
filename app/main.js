@@ -10,7 +10,7 @@ const BrowserWindow = electron.BrowserWindow
 const SettingsHelper = require('./settings-helper');
 const settingsHelper = new SettingsHelper();
 
-const ToolkitHelper = require('./toolkit-helper');
+const ToolkitHelper = require('./toolkit/toolkit-helper');
 const toolkitHelper = new ToolkitHelper();
 
 // Keep a global reference of the window object, if you don't, the window will
