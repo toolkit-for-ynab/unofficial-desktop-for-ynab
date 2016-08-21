@@ -16,13 +16,11 @@ const toolkitStagingPath = settingsHelper.toolkitStagingPath;
 
 class ToolkitHelper {
   static showSettingsPage() {
-    console.log(`Preload will be at: file://${__dirname}/chrome-api.js`);
-
     let win = new BrowserWindow({
       width: 800,
       height: 600,
       webPreferences: {
-        preload: `file://${__dirname}/chrome-api.js`
+        preload: path.join(__dirname, 'preload.js')
       }
     });
 
