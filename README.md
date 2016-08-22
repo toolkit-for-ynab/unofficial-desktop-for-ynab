@@ -1,7 +1,7 @@
 # Unofficial Desktop for YNAB
 Unofficial Desktop Wrapper for YNAB using Electron
 
-[![Build Status](https://travis-ci.org/toolkit-for-ynab/desktop-for-ynab.svg?branch=master)](https://travis-ci.org/toolkit-for-ynab/desktop-for-ynab)
+[![Build Status](https://travis-ci.org/toolkit-for-ynab/unofficial-desktop-for-ynab.svg?branch=master)](https://travis-ci.org/toolkit-for-ynab/unofficial-desktop-for-ynab)
 
 # To Install
 
