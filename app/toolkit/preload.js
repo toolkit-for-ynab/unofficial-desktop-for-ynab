@@ -105,10 +105,13 @@ let files = [
 
 requireKangoFile('kango/loader', 'window._kangoLoader = _kangoLoader;')
 
+// Loads all the JS into _kangoLoader.
 files.forEach((file) => {
   requireKangoFile(file);
 })
 
-// Loads the whole Kango API. Require caches, so the easiest way to grab it is to
-// just require it again.
+// Actually require()s the whole Kango API.
+_kangoLoader.require('kango/api');
+
+// And we're actually going to ask for our instance now.
 window.kango = _kangoLoader.require('kango/core').createApiInstance('kango');
